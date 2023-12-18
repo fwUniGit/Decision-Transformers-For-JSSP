@@ -138,9 +138,11 @@ Here it was necessary to add the following to the observation:
 </ul>
 Also the calc_lower_bound() method is implemented in this environment class  
 
+
 **<u>_lib/scheduling/jssp_graph.py_:</u>** 
 Manages the whole disjunctive graph of an instance. Further needed
 to get machine sequence and starting times of instance.
+
 
 **<u>_lib/networks/model.py_</u>**: Model that creates the embedding. The aggregated State that is used as observation for
 the Decision Transformer is created here.
