@@ -136,10 +136,10 @@ Here it was necessary to add the following to the observation:
 <li>'machine_sequence'</li>
 <li>'starting_times'</li>
 </ul>
-Also the calc_lower_bound() method is implemented in this environment class  
+Also the calc_lower_bound() method is implemented in this environment class
 
 
-**<u>_lib/scheduling/jssp_graph.py_:</u>** 
+**<u>_lib/scheduling/jssp_graph.py_:</u>**  
 Manages the whole disjunctive graph of an instance. Further needed
 to get machine sequence and starting times of instance.
 
