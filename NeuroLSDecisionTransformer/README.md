@@ -44,14 +44,14 @@ Watch out to add a space after the number in the string.
         <li>data_file_path: Path to instance file created with <i>create_jssp_val_test_sets.ipynb</i> notebook</li>
     </ul>
 </li>
-<li><b>run\_nls\_jssp.py</b>: This will run the NeuroLS model over the test_instance file defined in <i>eval_jssp.yaml</i>.
+<li><b>run_nls_jssp.py</b>: This will run the NeuroLS model over the test_instance file defined in <i>eval_jssp.yaml</i>.
 </li>
 <li>Process the created data points with <i>create_dt_dataset.ipynb</i> to calculate returns-to-go and convert format of dataset</li>
 </ol>
 
 ### Train NeuroLS Decision Transformer ###
-In order to train a new model run _lib/main.py_ with specified train_dataset.
-**Important:** The trainer (either dt_trainer or dt_cassandra_trainer) needs to be adjusts to the problem size and the validation dataset.
+In order to train a new model run _lib/main.py_ with specified previously created train dataset.
+**Important:** The trainer (either dt_trainer or dt_cassandra_trainer) needs to be adjusted to the problem size and the validation dataset.
 The run_benchmark.py also needs to be adjusted for the respective training data set size. Also allways the right NLS model needs to be activated in the _eval_jssp.yaml.
 #### Traindata
 The used train data is only available on the DVD-ROM appended to the thesis(Path: data/dt_dataset) because it exceeds the github file size limit.
@@ -65,7 +65,7 @@ Contains the minGPT pytorch Model adjusted for the D-DT
 forward path of the model expects _sequence_ of states, actions, targets rtgs,timestep, action_masks
 Note that minGPT refers to the context_length as _block_size_.
 
-**Class: dt_model.GPTConfig(vocab_size, block_size, kwargs)**
+**dt_model.GPTConfig(vocab_size, block_size, kwargs)**  
 vocab_size -> amount of actions in action space
 block_size -> context_length  
 Furthermore defines via kwargs ->  
@@ -80,7 +80,7 @@ This file define the minGPT training framework
 Contains: 
 
 **TrainerConfig**:  
-Set various parameters like learning rate, batch size, and optimization settings. It includes settings for learning rate decay.
+Sets various parameters like learning rate, batch size, and optimization settings. It includes settings for learning rate decay.
 
 **Trainer**:  
 The main class responsible for training the model. Implements a training loop with epoch and batch processing, and includes methods for saving checkpoints and testing the model. Logsprogress to Weights & Biases (wandb).
@@ -89,7 +89,7 @@ The main class responsible for training the model. Implements a training loop wi
 Equivalent to dt_trainer but for parallel multi gpu training
 
 #### utils.py ####
-Implements the functionality to pass the sequences to model 
+Implements the functionality to pass the sequences to the minGPT model 
 and converts logits returned from the model to the predicted action.
 
 
@@ -100,14 +100,14 @@ Implements the inference of the NLS model and the NLSDT model. In case of DT usa
 Extracts datapoints for NLSDT when solving instances and saves data_points.pt to output directory
 
 #### StateActionReturnDataSet.py ####
-class designed for use with PyTorch's Dataset interface.
-The state action return dataset is necessary for training. On initialization data in the
-format created from _create_data_set_ function is necessary.
+Class designed for use with PyTorch's Dataset interface.
+The StateActionReturndDataSet is necessary for training. On initialization data in the
+format created from _create_data_set.py_ is necessary.  
 __getitem()__ 
 returns  for a given index the sequence of the next _context_length_ _observations_, _actions_, rtgs, _timesteps_ 
 and time steps. 
 
-**Important**: When the vocab_size defined in _StateActionReturnDataSet_ muss be selected according to the operator mode.  
+**Important**: The vocab_size defined in _StateActionReturnDataSet_ must be selected according to the operator mode.  
 SET = 2; SELECT_LS = 8; SELECT_LS+ = 10
 
 
@@ -116,8 +116,8 @@ SET = 2; SELECT_LS = 8; SELECT_LS+ = 10
 Defines the DecisionTransformer class. The class includes methods for calculating return-to-go, updating rewards and states, and sampling actions based on the aggregated environment 
 
 #### Experiments ####
-To reproduce the exact same experiments presented in the thesis without needing to run the whole vary_rtg() process the files archives experiment_output/nls.zip
-and experiment_output/nlsdt.zip need to be unzipped.
+To reproduce the exact same experiments presented in the thesis without needing to run the whole vary_rtg() process the zip file _experiment_output/nls.zip_
+and _experiment_output/nlsdt.zip_ need to be unzipped.
 The folders contain numpy files for each solved instance named by a unique name per instance in order to compare the instances that are
 solved by the NLS and NLSDT.
 
@@ -128,7 +128,7 @@ the _lib/experiments/compare_models_and_plot.ipynb_ notebook can be used.
 ### Important NLS files with additional changes made for NLSDT ### 
 **<u>_lib/env/jssp_env.py_:</u>** 
 
-Gym environment to solve Job Shop Scheduling Problems based on Local Search (LS).
+Gym environment to solve Job Shop Scheduling Problems based on Local Search.
 Here it was necessary to add the following to the observation:
 <ul>
 <li>'instance_lower_bound'</li>
@@ -136,7 +136,7 @@ Here it was necessary to add the following to the observation:
 <li>'machine_sequence'</li>
 <li>'starting_times'</li>
 </ul>
-Also the calc_lower_bound() method is implemented in this environment class
+Also the calc_lower_bound() method is implemented in this environment class  
 
 **<u>_lib/scheduling/jssp_graph.py_:</u>** 
 Manages the whole disjunctive graph of an instance. Further needed
